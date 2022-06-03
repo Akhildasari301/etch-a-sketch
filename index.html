@@ -14,10 +14,15 @@
     </header>
     <main>
         <ul class="controls">
-            <li class="clearbtn">Clear Grid</li>
-            <li>Change Color</li>
+            <li class="clearbtn">Clear</li>
+            <li class='change-color'>
+                <label for="randColor"></label>
+                <input type="color" id="randColor" name="randColor">
+            </li>
+            <li class="random-color">Random Color</li>
             <li class="change-grid-size">Change Grid Size</li>
         </ul>
+        <div class="current-color"></div>
         <div id="container"></div>
         <div class="demo"></div>
     </main>
