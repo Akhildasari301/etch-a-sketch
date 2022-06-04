@@ -1,14 +1,19 @@
 let container = document.getElementById('container');
-let gridSize;
-gridSize = 16;
+let gridSize = 16;
 let container_height = container_width = 400;
-container.style.width = container.style.height = `${container_width}px`;
 let clearbtn = document.querySelector('.clearbtn');
-let default_color = "lightblue";
+let default_color = "gold";
 let cellColor = default_color;
 let color_mode = 'Fixed';
 let randColorBtn = document.querySelector('.random-color');
-let currentColor = document.querySelector('.current-color');
+let currentMode = document.querySelector('.current-mode');
+let colorChangeBtn = document.getElementById('randColor');
+let eraserBtn = document.querySelector('.eraser');
+let eraser_color = "#fefefe";
+let gridSizeChange = document.querySelector('.change-grid-size');
+
+container.style.width = container.style.height = `${container_width}px`;
+
 
 function createGrid(size) {
     for (let i = 0; i < size; i++){
@@ -32,8 +37,7 @@ function createGrid(size) {
     for (let i of cells){
         i.addEventListener('mouseover', () => changeColor(i));
     }
-    currentColor.textContent = `Current color mode: ${color_mode}`;
-    
+    currentMode.textContent = `Current mode: ${color_mode} color`;
 }
 
 function getRandomColor() {
@@ -46,6 +50,8 @@ function getRandomColor() {
 function changeColor(i) {
     if (color_mode == 'Fixed'){
         i.style.backgroundColor = cellColor;
+    } else if (color_mode == 'Eraser') {
+        i.style.backgroundColor = eraser_color;
     } else {
         i.style.backgroundColor = getRandomColor();
     }
@@ -56,29 +62,35 @@ function clearGrid() {
     createGrid(gridSize);
 }
 
-clearbtn.addEventListener('click', clearGrid)
 
-let gridSizeChange = document.querySelector('.change-grid-size');
 gridSizeChange.addEventListener('click', () => {
     gridSize = prompt("Enter the new size");
+    gridSize = gridSize || 16;
+    if (gridSize >= 100){
+        alert("Please enter a value less than 100.");
+        gridSize = prompt("Enter the new size");
+    }
     clearGrid()
 })
 
-
-window.onload = () => {
-    createGrid(gridSize);
-}
-
-
-let colorChangeBtn = document.getElementById('randColor');
 colorChangeBtn.oninput = () => {
     color_mode = "Fixed";
     cellColor = colorChangeBtn.value;
-    clearGrid();    
-    // createGrid(gridSize);
+    currentMode.textContent = `Current mode: ${color_mode} color`;
 }
 
 randColorBtn.addEventListener('click', () => {
     color_mode = "Random";
-    clearGrid();
+    currentMode.textContent = `Current mode: ${color_mode} color`;
 })
+
+eraserBtn.addEventListener('click', () => {
+    color_mode = "Eraser";
+    currentMode.textContent = `Current mode: ${color_mode}`;
+})
+
+clearbtn.addEventListener('click', clearGrid)
+
+window.onload = () => {
+    createGrid(gridSize);
+}
